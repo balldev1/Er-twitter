@@ -1,0 +1,18 @@
+If you are having problems with "Edit" / "Follow"  functionality throwing "Not Signed In" error, It is because you have a newer version of Next & NextAuth, a small modification is needed (you can find it in the github repostory). Here are the steps:
+
+1. Your [...nextauth].ts file should export authOptions separately
+2. Your serverAuth.ts file should use getServerSession(req, res, authOptions) instead of getSession({req})
+3. Modify serverAuth(req) to serverAuth(req, res) everytwhere in your code.
+4. Logout, shutdown the app, login again, everything should work
+
+authOptions เป็นตัวแปรที่ใช้ในรูปแบบการกำหนดค่าและ
+การตั้งค่าใน NextAuth.js เพื่อกำหนดค่าการตรวจสอบสถานะการเข้าสู่ระบบ
+ โดยอาจประกอบด้วยค่าเช่น providers, callbacks, pages เป็นต้น 
+ ซึ่งจะเป็นส่วนสำคัญในการกำหนดการตั้งค่าของระบบการยืนยันตัวตน (authentication)
+  ใน NextAuth.js ในไฟล์ [...nextauth].ts ของคุณ คุณควรตรวจสอบและแก้ไข authOptions
+ ตามคำแนะนำที่ได้รับเพื่อให้รองรับแก้ไขข้อผิดพลาด "Not Signed In" ที่กล่าวถึงก่อนหน้านี้
+
+ getServerSession เป็นฟังก์ชันที่ใช้ใน NextAuth.js เพื่อรับข้อมูลเซสชัน (session) 
+ จากเซิร์ฟเวอร์ ฟังก์ชันนี้รับพารามิเตอร์เป็น req (คำขอของเซิร์ฟเวอร์) 
+ และ res (การตอบกลับของเซิร์ฟเวอร์) และคืนค่าเซสชันในรูปแบบของออบเจ็กต์
+  ซึ่งมีข้อมูลเกี่ยวกับผู้ใช้และข้อมูลอื่น ๆ ที่เกี่ยวข้องกับการยืนยันตัวตน
